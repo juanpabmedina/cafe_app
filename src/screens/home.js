@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Text, Image, ImageBackground, StyleSheet, TextInput, TouchableOpacity} from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome"
 
 TouchableOpacity.defaultProps = { activeOpacity: 0.8 };
 
@@ -80,7 +79,7 @@ const styles = StyleSheet.create({
         flex:1
     },
     title: {
-        fontStyle: 'Roboto-Bold',
+        fontStyle: 'Roboto',
         fontWeight: 'bold',
         fontSize: 28,
         color: '#21894B',
@@ -89,7 +88,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start'
     }, 
     title2: {
-        fontStyle: 'Roboto-Bold',
+        fontStyle: 'Roboto',
         fontWeight: 'bold',
         fontSize: 24,
         color: '#12175E',
