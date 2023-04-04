@@ -1,17 +1,64 @@
 import React from "react";
-import { View, Text, Image, ImageBackground, StyleSheet, TextInput, TouchableOpacity} from "react-native";
+import { View, Text, Image, ImageBackground, StyleSheet, TextInput, TouchableOpacity, FlatList} from "react-native";
+
 
 TouchableOpacity.defaultProps = { activeOpacity: 0.8 };
 
-const ConnectionButton = ({ onPress, title }) => (
-    <TouchableOpacity onPress={onPress} style={styles.button1}>
-        <Text style={styles.textButton}>{title}</Text>
-    </TouchableOpacity>
-);
+
+
 
 const Home = () => {
-    const [text, onChangeText] = React.useState('Useless Text');
-    const [number, onChangeNumber] = React.useState('');
+    const [url, onChangeText] = React.useState('');
+    const [number1, onChangeNumber1] = React.useState('');
+    const [number2, onChangeNumber2] = React.useState('');
+    const [data, setData] = React.useState([]);
+    const [isLoading, setLoading] = React.useState(true);
+    
+    const GetRequest = async () =>{
+        try {
+            const response = await fetch(url);
+            const json = await response.json();
+            setData(json.data);
+          } catch (error) {
+            console.error(error);
+          } finally {
+            setLoading(false);
+          }
+          
+    };
+    
+    const PostRequest = async () =>{
+        try {
+            const response = await fetch(url, {
+              method: 'post',
+              mode: 'no-cors',
+              headers: {
+                'Accept': 'text/html',
+                'Content-Type': 'text/html',
+              },
+              body: JSON.stringify({
+                ph:number1
+              })
+            });
+          } catch (error) {
+            console.error(error);
+          } finally {
+            setLoading(false);
+          }
+    };
+    
+
+    const ConnectionButton = ({ onPress, title, data }) => (
+        <TouchableOpacity onPress={GetRequest} style={styles.button1}>
+            <Text style={styles.textButton}>{title}</Text>
+        </TouchableOpacity>
+    );
+
+    const SendButton = ({ onPress, title }) => (
+        <TouchableOpacity onPress={PostRequest} style={styles.button1}>
+            <Text style={styles.textButton}>{title}</Text>
+        </TouchableOpacity>
+    );
 
     return(
         
@@ -27,24 +74,39 @@ const Home = () => {
 
             <TextInput
                 style={styles.input}
-                onChangeText={onChangeNumber}
-                value={number}
+                onChangeText={onChangeText}
+                value={url}
                 placeholder="192.168.207.185/electiva/upload.php"
                 keyboardType="default"
             />
             
-            <ConnectionButton title="Conectar" size="sm" backgroundColor="#1DB72D" />
+            <ConnectionButton data={url} title="Conectar" size="sm" backgroundColor="#1DB72D" />
             <Text style={styles.title2}> Datos Recibidos </Text>
 
             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
-                <ImageBackground                    
-                    style={styles.squareIrradiance}
-                    source={require("../images/out1.png")}
-                />
-                <ImageBackground                    
-                    style={styles.squarePh}
-                    source={require("../images/out2.png")}
-                />
+                <ImageBackground style={styles.squareIrradiance} source={require("../images/out1.png")}>
+                    
+                    <FlatList
+                        data={data}
+                        renderItem={({item, index}) => {
+                            const isEnd = index === data.length - 1;
+                            return(
+                                <Text {...(isEnd && {
+                                    style: {
+                                      color: 'red', 
+                                      fontWeight: 'bold'
+                                    }
+                                  })}>
+                                    
+                                    {isEnd && <Text>{item.ph} </Text>}
+                                  </Text>
+                            );
+                        }}
+                        />
+                </ImageBackground>
+                <ImageBackground style={styles.squarePh} source={require("../images/out2.png")}>
+                    <Text style={styles.out1}>0.5</Text>
+                </ImageBackground>
             </View>
 
             <Text style={styles.title2}> Envio de Datos </Text>
@@ -52,22 +114,22 @@ const Home = () => {
             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
                 <TextInput
                     style={styles.input2}
-                    onChangeText={onChangeNumber}
-                    value={number}
+                    onChangeText={onChangeNumber1}
+                    value={number1}
                     placeholder="2 K w/m²"
                     keyboardType="numeric"
                 />
                 <TextInput
                     style={styles.input2}
-                    onChangeText={onChangeNumber}
-                    value={number}
+                    onChangeText={onChangeNumber2}
+                    value={number2}
                     placeholder="10   "
                     keyboardType="numeric"
                 />
             </View>
 
 
-            <ConnectionButton title="Enviar" size="sm" backgroundColor="#1DB72D" />
+            <SendButton title="Enviar" size="sm" backgroundColor="#1DB72D" />
         </View>
     )
 }
@@ -79,7 +141,7 @@ const styles = StyleSheet.create({
         flex:1
     },
     title: {
-        fontStyle: 'Roboto',
+        fontStyle: 'italic',
         fontWeight: 'bold',
         fontSize: 28,
         color: '#21894B',
@@ -88,7 +150,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start'
     }, 
     title2: {
-        fontStyle: 'Roboto',
+        fontStyle: 'italic',
         fontWeight: 'bold',
         fontSize: 24,
         color: '#12175E',
@@ -151,7 +213,11 @@ const styles = StyleSheet.create({
         marginTop:15,
         marginRight:25,
     },
-    ipIcon: {
-        padding: 10,
+    out1: {
+        fontStyle: 'italic',
+        fontWeight: 'bold',
+        fontSize: 24,
+        alignSelf: "center",
+        marginTop:100,
     },
   });

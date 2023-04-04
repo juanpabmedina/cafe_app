@@ -7,7 +7,6 @@ const App = () => {
       <ScrollView>
         <Home></Home>
       </ScrollView>
-      
     </ImageBackground>
     
 
