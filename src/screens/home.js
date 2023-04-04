@@ -11,8 +11,10 @@ const Home = () => {
     const [url, onChangeText] = React.useState('');
     const [number1, onChangeNumber1] = React.useState('');
     const [number2, onChangeNumber2] = React.useState('');
-    const [data, setData] = React.useState([]);
+    const [data, setData] = React.useState([1,2]);
     const [isLoading, setLoading] = React.useState(true);
+    const flatList1 = React.useRef(null)
+    const flatList2 = React.useRef(null)
     
     const GetRequest = async () =>{
         try {
@@ -37,7 +39,8 @@ const Home = () => {
                 'Content-Type': 'text/html',
               },
               body: JSON.stringify({
-                ph:number1
+                ph:number1,
+                irr:number2
               })
             });
           } catch (error) {
@@ -85,27 +88,44 @@ const Home = () => {
 
             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
                 <ImageBackground style={styles.squareIrradiance} source={require("../images/out1.png")}>
-                    
+                 
                     <FlatList
+                      ref={flatList1}
+                      onContentSizeChange={() => {
+                          flatList1.current.scrollToEnd();
+                      }}
                         data={data}
                         renderItem={({item, index}) => {
                             const isEnd = index === data.length - 1;
                             return(
-                                <Text {...(isEnd && {
-                                    style: {
-                                      color: 'red', 
-                                      fontWeight: 'bold'
-                                    }
-                                  })}>
-                                    
-                                    {isEnd && <Text>{item.ph} </Text>}
-                                  </Text>
+                                <Text style={styles.out1}>
+                                    {isEnd && <Text>{item.irr} </Text>}
+                                </Text>
                             );
                         }}
+                        scrollEnabled={false}
+                        
                         />
                 </ImageBackground>
+
                 <ImageBackground style={styles.squarePh} source={require("../images/out2.png")}>
-                    <Text style={styles.out1}>0.5</Text>
+                    <FlatList
+                      ref={flatList2}
+                      onContentSizeChange={() => {
+                          flatList2.current.scrollToEnd();
+                      }}
+                        data={data}
+                        renderItem={({item, index}) => {
+                            const isEnd = index === data.length - 1;
+                            return(
+                                <Text style={styles.out1}>
+                                    {isEnd && <Text>{item.ph} </Text>}
+                                </Text>
+                            );
+                        }}
+                        scrollEnabled={false}
+                        
+                        />
                 </ImageBackground>
             </View>
 
@@ -218,6 +238,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 24,
         alignSelf: "center",
-        marginTop:100,
+        marginBottom:10,
     },
   });
