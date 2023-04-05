@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { View, Text, Image, ImageBackground, StyleSheet, TextInput, TouchableOpacity, FlatList} from "react-native";
 
 
@@ -15,6 +15,12 @@ const Home = () => {
     const [isLoading, setLoading] = React.useState(true);
     const flatList1 = React.useRef(null)
     const flatList2 = React.useRef(null)
+
+    const [time, setTime] = React.useState(new Date());
+
+  
+  
+  
     
     const GetRequest = async () =>{
         try {
@@ -62,11 +68,21 @@ const Home = () => {
             <Text style={styles.textButton}>{title}</Text>
         </TouchableOpacity>
     );
+    
+   
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (isLoading == false) {
+                GetRequest();
+            }
+        }, 5000);
+    
+        return () => clearInterval(interval);
+      }, [url, isLoading]);
 
     return(
         
         <View style={styles.container}> 
-     
             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
                 <Text style={styles.title}> Hola </Text>
                 <Image                    
