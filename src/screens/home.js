@@ -16,10 +16,6 @@ const Home = () => {
     const flatList1 = React.useRef(null)
     const flatList2 = React.useRef(null)
 
-    const [time, setTime] = React.useState(new Date());
-
-  
-  
   
     
     const GetRequest = async () =>{
@@ -59,14 +55,26 @@ const Home = () => {
 
     const ConnectionButton = ({ onPress, title, data }) => (
         <TouchableOpacity onPress={GetRequest} style={styles.button1}>
-            <Text style={styles.textButton}>{title}</Text>
+             <View style={{flexDirection:'row'}}>
+                <Image                    
+                        style={styles.imageStyle2}
+                        source={require("../images/connection_icon.png")}
+                    />
+                <Text style={styles.textButton}>{title}</Text>
+            </View>
         </TouchableOpacity>
     );
 
     const SendButton = ({ onPress, title }) => (
         <TouchableOpacity onPress={PostRequest} style={styles.button1}>
-            <Text style={styles.textButton}>{title}</Text>
-        </TouchableOpacity>
+        <View style={{flexDirection:'row'}}>
+           <Image                    
+                   style={styles.imageStyle2}
+                   source={require("../images/send_icon.png")}
+               />
+           <Text style={styles.textButton}>{title}</Text>
+       </View>
+   </TouchableOpacity>
     );
     
    
@@ -90,14 +98,20 @@ const Home = () => {
                     source={require("../images/cup2.png")}
                 />
             </View>
-
-            <TextInput
-                style={styles.input}
-                onChangeText={onChangeText}
-                value={url}
-                placeholder="192.168.207.185/electiva/upload.php"
-                keyboardType="default"
-            />
+            <View style={styles.sectionInputStyle}>
+                <Image                    
+                        source={require("../images/ip_icon.png")}
+                        style={styles.imageStyle}
+                    />
+                <TextInput
+                    style={{flex: 1}}
+                    onChangeText={onChangeText}
+                    value={url}
+                    placeholder="http://192.168.10.101:8080"
+                    keyboardType="default"
+                />
+            </View>
+          
             
             <ConnectionButton data={url} title="Conectar" size="sm" backgroundColor="#1DB72D" />
             <Text style={styles.title2}> Datos Recibidos </Text>
@@ -148,24 +162,36 @@ const Home = () => {
             <Text style={styles.title2}> Envio de Datos </Text>
 
             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
-                <TextInput
-                    style={styles.input2}
-                    onChangeText={onChangeNumber1}
-                    value={number1}
-                    placeholder="2 K w/m²"
-                    keyboardType="numeric"
-                />
-                <TextInput
-                    style={styles.input2}
-                    onChangeText={onChangeNumber2}
-                    value={number2}
-                    placeholder="10   "
-                    keyboardType="numeric"
-                />
+                <View style={styles.sectionInput2Style}>
+                    <Image                    
+                            source={require("../images/irr_icon.png")}
+                            style={styles.imageStyle}
+                        />
+                    <TextInput
+                        style={{flex: 1}}
+                        onChangeText={onChangeNumber1}
+                        value={number1}
+                        placeholder="2 K w/m²"
+                        keyboardType="numeric"
+                    />
+                </View>
+                <View style={styles.sectionInput2Style}>
+                    <Image                    
+                            source={require("../images/ph_icon.png")}
+                            style={styles.imageStyle}
+                        />
+                    <TextInput
+                        style={{flex: 1}}
+                        onChangeText={onChangeNumber2}
+                        value={number2}
+                        placeholder="10   "
+                        keyboardType="numeric"
+                    />
+                </View>
             </View>
 
 
-            <SendButton title="Enviar" size="sm" backgroundColor="#1DB72D" />
+            <SendButton title="  Enviar" size="sm" backgroundColor="#1DB72D" />
         </View>
     )
 }
@@ -176,6 +202,48 @@ const styles = StyleSheet.create({
     container: {
         flex:1
     },
+    sectionInputStyle: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height:50,
+        margin: 15,
+        borderWidth: 0.5,
+        padding: 5,
+        fontSize:16,
+        borderRadius:50,
+        backgroundColor: "#F6F6F6"
+      },
+      sectionInput2Style: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        height:50,
+        width: 150,
+        margin: 15,
+        borderWidth: 0.5,
+        padding: 5,
+        fontSize:16,
+        borderRadius:50,
+        backgroundColor: "#F6F6F6"
+      },
+      imageStyle: {
+        padding: 10,
+        margin: 5,
+        height: 25,
+        width: 25,
+        resizeMode: 'stretch',
+        alignItems: 'center',
+      },
+      imageStyle2: {
+        padding: 10,
+        margin: 5,
+        height: 25,
+        width: 25,
+        resizeMode: 'stretch',
+        alignItems: 'center',
+        marginLeft:10
+      },
     title: {
         fontStyle: 'italic',
         fontWeight: 'bold',
@@ -200,25 +268,6 @@ const styles = StyleSheet.create({
         marginTop: 15,
         marginRight:20
     },
-    input: {
-        height:50,
-        margin: 15,
-        borderWidth: 0.5,
-        padding: 8,
-        fontSize:16,
-        borderRadius:50,
-        backgroundColor: "#F6F6F6"
-      },
-    input2: {
-        height:50,
-        width: 150,
-        margin: 15,
-        borderWidth: 0.5,
-        padding: 8,
-        fontSize:16,
-        borderRadius:50,
-        backgroundColor: "#F6F6F6"
-    },
     button1: {
         width:180,
         height:47,
@@ -233,6 +282,8 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontWeight: "bold",
         alignSelf: "center",
+        marginLeft: 10
+ 
 
     },
     squareIrradiance: {
