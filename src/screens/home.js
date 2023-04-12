@@ -8,7 +8,7 @@ TouchableOpacity.defaultProps = { activeOpacity: 0.8 };
 
 
 const Home = () => {
-    const [url, onChangeText] = React.useState('');
+    const [url, onChangeText] = React.useState('http://192.168.10.101:8080');
     const [number1, onChangeNumber1] = React.useState('');
     const [number2, onChangeNumber2] = React.useState('');
     const [data, setData] = React.useState([1,2]);
@@ -92,7 +92,7 @@ const Home = () => {
         
         <View style={styles.container}> 
             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
-                <Text style={styles.title}> Hola </Text>
+                <Text style={styles.title}> Bienvenido </Text>
                 <Image                    
                     style={styles.coffecup}
                     source={require("../images/cup2.png")}
