@@ -22,7 +22,7 @@ const Home = () => {
         try {
             const response = await fetch(url);
             const json = await response.json();
-            setData(json.data);
+            setData(json.estacion_fermentado);
           } catch (error) {
             console.error(error);
           } finally {
@@ -129,7 +129,7 @@ const Home = () => {
                             const isEnd = index === data.length - 1;
                             return(
                                 <Text style={styles.out1}>
-                                    {isEnd && <Text>{item.irr} </Text>}
+                                    {isEnd && <Text>{item.temp_alt1} </Text>}
                                 </Text>
                             );
                         }}
@@ -149,7 +149,7 @@ const Home = () => {
                             const isEnd = index === data.length - 1;
                             return(
                                 <Text style={styles.out1}>
-                                    {isEnd && <Text>{item.ph} </Text>}
+                                    {isEnd && <Text>{item.temp_alt2} </Text>}
                                 </Text>
                             );
                         }}
@@ -283,8 +283,6 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         alignSelf: "center",
         marginLeft: 10
- 
-
     },
     squareIrradiance: {
         width: 145,
@@ -305,6 +303,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 24,
         alignSelf: "center",
-        marginBottom:10,
+        height:50,
+        marginTop:100,
     },
   });
