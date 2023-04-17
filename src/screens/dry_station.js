@@ -15,6 +15,10 @@ const Home = () => {
     const [isLoading, setLoading] = React.useState(true);
     const flatList1 = React.useRef(null)
     const flatList2 = React.useRef(null)
+    const flatList3 = React.useRef(null)
+    const flatList4 = React.useRef(null)
+    const flatList5 = React.useRef(null)
+
 
   
     
@@ -22,7 +26,7 @@ const Home = () => {
         try {
             const response = await fetch(url);
             const json = await response.json();
-            setData(json.estacion_fermentado);
+            setData(json.estacion_secado);
           } catch (error) {
             console.error(error);
           } finally {
@@ -41,8 +45,7 @@ const Home = () => {
                 'Content-Type': 'text/html',
               },
               body: JSON.stringify({
-                ph:number1,
-                irr:number2
+                hg:number1,
               })
             });
           } catch (error) {
@@ -92,10 +95,10 @@ const Home = () => {
         
         <View style={styles.container}> 
             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
-                <Text style={styles.title}> Bienvenido </Text>
+                <Text style={styles.title}> Estación De Secado </Text>
                 <Image                    
-                    style={styles.coffecup}
-                    source={require("../images/cup2.png")}
+                    style={styles.dry_img}
+                    source={require("../images/estacion_secado/sunny.png")}
                 />
             </View>
             <View style={styles.sectionInputStyle}>
@@ -117,8 +120,7 @@ const Home = () => {
             <Text style={styles.title2}> Datos Recibidos </Text>
 
             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
-                <ImageBackground style={styles.squareIrradiance} source={require("../images/out1.png")}>
-                 
+                <ImageBackground style={styles.squareIrradiance} source={require("../images/estacion_secado/temperature_out.png")}>
                     <FlatList
                       ref={flatList1}
                       onContentSizeChange={() => {
@@ -129,7 +131,7 @@ const Home = () => {
                             const isEnd = index === data.length - 1;
                             return(
                                 <Text style={styles.out1}>
-                                    {isEnd && <Text>{item.temp_alt1} </Text>}
+                                    {isEnd && <Text>T1: {item.temp_alt1}°C </Text>}
                                 </Text>
                             );
                         }}
@@ -138,7 +140,7 @@ const Home = () => {
                         />
                 </ImageBackground>
 
-                <ImageBackground style={styles.squarePh} source={require("../images/out2.png")}>
+                <ImageBackground style={styles.squarePh} source={require("../images/estacion_secado/temperature_out.png")}>
                     <FlatList
                       ref={flatList2}
                       onContentSizeChange={() => {
@@ -149,7 +151,7 @@ const Home = () => {
                             const isEnd = index === data.length - 1;
                             return(
                                 <Text style={styles.out1}>
-                                    {isEnd && <Text>{item.temp_alt2} </Text>}
+                                    {isEnd && <Text>T2: {item.temp_alt2}°C </Text>}
                                 </Text>
                             );
                         }}
@@ -159,32 +161,87 @@ const Home = () => {
                 </ImageBackground>
             </View>
 
+            <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
+                <ImageBackground style={styles.squareIrradiance} source={require("../images/estacion_secado/temperature_out.png")}>
+                 
+                    <FlatList
+                      ref={flatList3}
+                      onContentSizeChange={() => {
+                          flatList3.current.scrollToEnd();
+                      }}
+                        data={data}
+                        renderItem={({item, index}) => {
+                            const isEnd = index === data.length - 1;
+                            return(
+                                <Text style={styles.out1}>
+                            
+                                    {isEnd && <Text>T3: {item.temp_alt3}°C </Text>}
+                                </Text>
+                            );
+                        }}
+                        scrollEnabled={false}
+                        
+                        />
+                </ImageBackground>
+
+                <ImageBackground style={styles.squarePh} source={require("../images/estacion_secado/t_ambiente_out.png")}>
+                    <FlatList
+                      ref={flatList4}
+                      onContentSizeChange={() => {
+                          flatList4.current.scrollToEnd();
+                      }}
+                        data={data}
+                        renderItem={({item, index}) => {
+                            const isEnd = index === data.length - 1;
+                            return(
+                                <Text style={styles.out1}>
+                                    {isEnd && <Text>T.A: {item.temp_amb}°C </Text>}
+                                </Text>
+                            );
+                        }}
+                        scrollEnabled={false}
+                        
+                        />
+                </ImageBackground>
+            </View>
+
+            <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
+                <ImageBackground style={styles.squareIrradiance} source={require("../images/estacion_secado/humidity_out.png")}>
+                 
+                    <FlatList
+                      ref={flatList5}
+                      onContentSizeChange={() => {
+                          flatList5.current.scrollToEnd();
+                      }}
+                        data={data}
+                        renderItem={({item, index}) => {
+                            const isEnd = index === data.length - 1;
+                            return(
+                                <Text style={styles.out1}>
+                                    {isEnd && <Text>H1: {item.hum_amb}% </Text>}
+                                </Text>
+                            );
+                        }}
+                        scrollEnabled={false}
+                        
+                        />
+                </ImageBackground>
+
+            </View>
+
             <Text style={styles.title2}> Envio de Datos </Text>
 
             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
                 <View style={styles.sectionInput2Style}>
                     <Image                    
-                            source={require("../images/irr_icon.png")}
+                            source={require("../images/estacion_secado/humidity.png")}
                             style={styles.imageStyle}
                         />
                     <TextInput
                         style={{flex: 1}}
                         onChangeText={onChangeNumber1}
                         value={number1}
-                        placeholder="2 K w/m²"
-                        keyboardType="numeric"
-                    />
-                </View>
-                <View style={styles.sectionInput2Style}>
-                    <Image                    
-                            source={require("../images/ph_icon.png")}
-                            style={styles.imageStyle}
-                        />
-                    <TextInput
-                        style={{flex: 1}}
-                        onChangeText={onChangeNumber2}
-                        value={number2}
-                        placeholder="10   "
+                        placeholder="Humedad del grano"
                         keyboardType="numeric"
                     />
                 </View>
@@ -219,12 +276,13 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         height:50,
-        width: 150,
+        width: 180,
         margin: 15,
         borderWidth: 0.5,
         padding: 5,
         fontSize:16,
         borderRadius:50,
+        marginLeft: 25,
         backgroundColor: "#F6F6F6"
       },
       imageStyle: {
@@ -247,8 +305,8 @@ const styles = StyleSheet.create({
     title: {
         fontStyle: 'italic',
         fontWeight: 'bold',
-        fontSize: 28,
-        color: '#21894B',
+        fontSize: 25,
+        color: '#FFA600',
         marginTop: 35,
         marginLeft: 25,
         alignSelf: 'flex-start'
@@ -257,21 +315,21 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
         fontWeight: 'bold',
         fontSize: 24,
-        color: '#12175E',
+        color: '#754C00',
         marginTop: 35,
         marginLeft: 25,
         alignSelf: 'flex-start'
     }, 
-    coffecup:{
-        width: 76,
-        height: 76,
-        marginTop: 15,
+    dry_img:{
+        width: 60,
+        height: 60,
+        marginTop: 25,
         marginRight:20
     },
     button1: {
         width:180,
         height:47,
-        backgroundColor: "#1DB72D",
+        backgroundColor: "#FFA600",
         borderRadius: 30,
         alignSelf:'center',
         paddingVertical: 5,
@@ -303,7 +361,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 24,
         alignSelf: "center",
-        height:50,
+        height:45,
         marginTop:100,
     },
   });

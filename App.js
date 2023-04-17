@@ -1,11 +1,11 @@
 import React,{useState} from 'react'
-import Home from './src/screens/home'
+import Dry_station from './src/screens/dry_station'
 import { ImageBackground, StyleSheet, ScrollView } from 'react-native'
 const App = () => {
   return(
     <ImageBackground source={require("./src/images/background_app.png")} resizeMode="cover" style={styles.background}>
       <ScrollView>
-        <Home></Home>
+        <Dry_station></Dry_station>
       </ScrollView>
     </ImageBackground>
     
