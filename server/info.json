@@ -1,7 +1,7 @@
 {
   "estacion_meteorologica": [
-    { "time": "1", "temp_amb": "0.1", "hum_amb": "100", "vel_viento": 10, "dir_viento": "direccion", "pluv": 12, "irr": 122},
-    { "time": "1", "temp_amb": "0.1", "hum_amb": "100", "vel_viento": 10, "dir_viento": "direccion", "pluv": 12, "irr": 122}
+    { "temp_amb": "0.1", "hum_amb": "100", "vel_viento": 10, "dir_viento": "direccion", "pluv": 12, "irr": 122},
+    { "temp_amb": 10, "hum_amb": 80, "vel_viento": 10, "dir_viento": "der", "pluv": 12, "irr": 122}
   ],
   "estacion_secado": [
     {"temp_alt1": 20, "temp_alt2": 20, "temp_alt3": 20, "temp_amb": 20, "hum_amb": 80},
