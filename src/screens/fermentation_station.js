@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import { View, Text, Image, ImageBackground, StyleSheet, TextInput, TouchableOpacity, FlatList} from "react-native";
+import { View, Text, Image, ImageBackground, StyleSheet, TextInput, TouchableOpacity, FlatList, ScrollView} from "react-native";
 
 
 TouchableOpacity.defaultProps = { activeOpacity: 0.8 };
@@ -93,10 +93,11 @@ const Home = () => {
       }, [url, isLoading]);
 
     return(
-        
+        <ImageBackground source={require("../images/background_app.png")} resizeMode="cover" style={styles.background}>
+        <ScrollView>
         <View style={styles.container}> 
             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
-                <Text style={styles.title}> Estación De Fermentado </Text>
+                <Text style={styles.title}> Estación de Fermentado </Text>
                 <Image                    
                     style={styles.dry_img}
                     source={require("../images/estacion_fermentado/fermentation.png")}
@@ -222,6 +223,8 @@ const Home = () => {
 
             <SendButton title="  Enviar" size="sm" backgroundColor="#1DB72D" />
         </View>
+        </ScrollView>
+        </ImageBackground>
     )
 }
 
@@ -229,7 +232,8 @@ export default Home;
 
 const styles = StyleSheet.create({
     container: {
-        flex:1
+        flex:1,
+        marginBottom: 30
     },
     sectionInputStyle: {
         flexDirection: 'row',

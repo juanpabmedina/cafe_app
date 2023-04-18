@@ -7,9 +7,9 @@ import { ImageBackground, StyleSheet, ScrollView } from 'react-native'
 const App = () => {
   return(
     <ImageBackground source={require("./src/images/background_app.png")} resizeMode="cover" style={styles.background}>
-      <ScrollView>
-        <Fermentation_station></Fermentation_station>
-      </ScrollView>
+     
+        <Navigation/>
+     
     </ImageBackground>
     
 

@@ -3,7 +3,7 @@ import socketserver
 import json
 import cgi
 
-hostName = "192.168.10.102"
+hostName = "172.16.12.232"
 
 PORT = 8080
 

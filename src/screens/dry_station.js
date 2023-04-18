@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import { View, Text, Image, ImageBackground, StyleSheet, TextInput, TouchableOpacity, FlatList} from "react-native";
+import { View, Text, Image, ImageBackground, StyleSheet, TextInput, TouchableOpacity, FlatList, ScrollView} from "react-native";
 
 
 TouchableOpacity.defaultProps = { activeOpacity: 0.8 };
@@ -8,7 +8,7 @@ TouchableOpacity.defaultProps = { activeOpacity: 0.8 };
 
 
 const Home = () => {
-    const [url, onChangeText] = React.useState('http://192.168.10.101:8080');
+    const [url, onChangeText] = React.useState('http://172.16.12.232:8080');
     const [number1, onChangeNumber1] = React.useState('');
     const [number2, onChangeNumber2] = React.useState('');
     const [data, setData] = React.useState([1,2]);
@@ -92,7 +92,8 @@ const Home = () => {
       }, [url, isLoading]);
 
     return(
-        
+        <ImageBackground source={require("../images/background_app.png")} resizeMode="cover" style={styles.background}>
+        <ScrollView>
         <View style={styles.container}> 
             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
                 <Text style={styles.title}> Estación De Secado </Text>
@@ -250,6 +251,8 @@ const Home = () => {
 
             <SendButton title="  Enviar" size="sm" backgroundColor="#1DB72D" />
         </View>
+        </ScrollView>
+        </ImageBackground>
     )
 }
 
@@ -257,7 +260,8 @@ export default Home;
 
 const styles = StyleSheet.create({
     container: {
-        flex:1
+        flex:1,
+        marginBottom: 30
     },
     sectionInputStyle: {
         flexDirection: 'row',
