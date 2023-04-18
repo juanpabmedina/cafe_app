@@ -5,6 +5,9 @@
 # Images 
 src/images/
 
+# Server venv 
+server/web_server_venv/
+
 # Xcode
 #
 build/
