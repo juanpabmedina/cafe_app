@@ -8,7 +8,8 @@ TouchableOpacity.defaultProps = { activeOpacity: 0.8 };
 
 
 const Home = () => {
-    const [url, onChangeText] = React.useState('http://172.16.12.232:8080');
+    const customData = require('./url.json'); 
+    const [url, onChangeText] = React.useState(customData.url);
     const [number1, onChangeNumber1] = React.useState('');
     const [number2, onChangeNumber2] = React.useState('');
     const [data, setData] = React.useState([1,2]);
@@ -19,10 +20,8 @@ const Home = () => {
     const flatList4 = React.useRef(null)
     const flatList5 = React.useRef(null)
 
-
-  
     
-    const GetRequest = async () =>{
+    const GetRequest = async (filePath, content) =>{
         try {
             const response = await fetch(url);
             const json = await response.json();
@@ -261,7 +260,7 @@ export default Home;
 const styles = StyleSheet.create({
     container: {
         flex:1,
-        marginBottom: 30
+        marginBottom: 120
     },
     sectionInputStyle: {
         flexDirection: 'row',
