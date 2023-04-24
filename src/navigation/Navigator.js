@@ -24,7 +24,7 @@ const FadeInView = (props, { navigation }) => {
     return () => {
       Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: 550,
+        duration: 100,
         useNativeDriver: true,
       }).start();
     };

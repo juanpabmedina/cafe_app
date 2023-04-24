@@ -8,7 +8,8 @@ TouchableOpacity.defaultProps = { activeOpacity: 0.8 };
 
 
 const Home = () => {
-    const [url, onChangeText] = React.useState('http://192.168.10.101:8080');
+    const customData = require('./url.json'); 
+    const [url, onChangeText] = React.useState(customData.url);
     const [number1, onChangeNumber1] = React.useState('');
     const [number2, onChangeNumber2] = React.useState('');
     const [data, setData] = React.useState([1,2]);
@@ -55,10 +56,31 @@ const Home = () => {
             setLoading(false);
           }
     };
+
+    const PostRequestDataTime = async () =>{
+        try {
+            const response = await fetch(url, {
+              method: 'post',
+              mode: 'no-cors',
+              headers: {
+                'Accept': 'text/html',
+                'Content-Type': 'text/html',
+              },
+              body: JSON.stringify({
+                'timestamp': Date(),
+              })
+            });
+          } catch (error) {
+            console.error(error);
+          } finally {
+            setLoading(false);
+            GetRequest()
+          }
+    };
     
 
     const ConnectionButton = ({ onPress, title, data }) => (
-        <TouchableOpacity onPress={GetRequest} style={styles.button1}>
+        <TouchableOpacity onPress={PostRequestDataTime} style={styles.button1}>
              <View style={{flexDirection:'row'}}>
                 <Image                    
                         style={styles.imageStyle2}
@@ -193,28 +215,28 @@ const Home = () => {
             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
                 <View style={styles.sectionInput2Style}>
                     <Image                    
-                            source={require("../images/estacion_secado/humidity.png")}
+                            source={require("../images/estacion_fermentado/ph_icon.png")}
                             style={styles.imageStyle}
                         />
                     <TextInput
                         style={{flex: 1}}
                         onChangeText={onChangeNumber1}
                         value={number1}
-                        placeholder="Humedad del grano"
+                        placeholder="Valor ph"
                         keyboardType="numeric"
                     />
                 </View>
 
                 <View style={styles.sectionInput2Style}>
                     <Image                    
-                            source={require("../images/estacion_secado/humidity.png")}
+                            source={require("../images/estacion_fermentado/sugar-cube.png")}
                             style={styles.imageStyle}
                         />
                     <TextInput
                         style={{flex: 1}}
                         onChangeText={onChangeNumber2}
                         value={number2}
-                        placeholder="Humedad del grano"
+                        placeholder="Grado Brix"
                         keyboardType="numeric"
                     />
                 </View>

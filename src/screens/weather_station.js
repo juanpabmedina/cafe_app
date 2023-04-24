@@ -8,7 +8,8 @@ TouchableOpacity.defaultProps = { activeOpacity: 0.8 };
 
 
 const Home = () => {
-    const [url, onChangeText] = React.useState('http://192.168.10.101:8080');
+    const customData = require('./url.json'); 
+    const [url, onChangeText] = React.useState(customData.url);
     const [number1, onChangeNumber1] = React.useState('');
     const [number2, onChangeNumber2] = React.useState('');
     const [data, setData] = React.useState([1,2]);
@@ -38,7 +39,7 @@ const Home = () => {
     
 
     const ConnectionButton = ({ onPress, title, data }) => (
-        <TouchableOpacity onPress={GetRequest} style={styles.button1}>
+        <TouchableOpacity onPress={PostRequestDataTime} style={styles.button1}>
              <View style={{flexDirection:'row'}}>
                 <Image                    
                         style={styles.imageStyle2}
@@ -48,6 +49,27 @@ const Home = () => {
             </View>
         </TouchableOpacity>
     );
+
+    const PostRequestDataTime = async () =>{
+        try {
+            const response = await fetch(url, {
+              method: 'post',
+              mode: 'no-cors',
+              headers: {
+                'Accept': 'text/html',
+                'Content-Type': 'text/html',
+              },
+              body: JSON.stringify({
+                'timestamp': Date(),
+              })
+            });
+          } catch (error) {
+            console.error(error);
+          } finally {
+            setLoading(false);
+            GetRequest()
+          }
+    };
     
    
     useEffect(() => {

@@ -53,10 +53,31 @@ const Home = () => {
             setLoading(false);
           }
     };
+
+    const PostRequestDataTime = async () =>{
+        try {
+            const response = await fetch(url, {
+              method: 'post',
+              mode: 'no-cors',
+              headers: {
+                'Accept': 'text/html',
+                'Content-Type': 'text/html',
+              },
+              body: JSON.stringify({
+                'timestamp': Date(),
+              })
+            });
+          } catch (error) {
+            console.error(error);
+          } finally {
+            setLoading(false);
+            GetRequest()
+          }
+    };
     
 
     const ConnectionButton = ({ onPress, title, data }) => (
-        <TouchableOpacity onPress={GetRequest} style={styles.button1}>
+        <TouchableOpacity onPress={PostRequestDataTime} style={styles.button1}>
              <View style={{flexDirection:'row'}}>
                 <Image                    
                         style={styles.imageStyle2}
