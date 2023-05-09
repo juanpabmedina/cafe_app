@@ -3,14 +3,14 @@ import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { Text, StyleSheet,TouchableOpacity, View, Animated } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
+import Ionicons1 from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Animatable from 'react-native-animatable';
-
-// Screens
 
 // Screens
 import DryScreen from '../screens/dry_station';
 import FermentationScreen from '../screens/fermentation_station';
 import WeatherScreen from '../screens/weather_station';
+import ValvesScreen from '../screens/valves_station';
 
 const FadeInView = (props, { navigation }) => {
   const fadeAnim = React.useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
@@ -58,10 +58,18 @@ const FadeweatherScreen = (props) => (
     <WeatherScreen {...props} />
   </FadeInView>
 );
+
+const FadevalvesScreen = (props) => (
+  <FadeInView>
+    <ValvesScreen {...props} />
+  </FadeInView>
+);
+
 //Screen names
 const dryName = "Secado";
 const fermentationName = "Fermentación";
 const weatherName = "Meteorológica";
+const valvesName = "Válvulas";
 const Tab = createBottomTabNavigator();
 
 const animate1 = { 0: { scale: .5, translateY: 7 }, .92: { translateY: -34 }, 1: { scale: 1.2, translateY: -24 } }
@@ -205,6 +213,51 @@ const TabButton3 = (props) => {
   )
 }
 
+const TabButton4 = (props) => {
+  const { icon_name, onPress, accessibilityState } = props;
+  const focused = accessibilityState.selected;
+  const viewRef = React.useRef(null);
+  const circleRef = React.useRef(null);
+  const textRef = React.useRef(null);
+  let color = React.useRef('');
+
+  React.useEffect(() => {
+    if (focused) {
+      viewRef.current.animate(animate1);
+      circleRef.current.animate(circle1);
+      textRef.current.transitionTo({ scale: 1 });
+    } else {
+      viewRef.current.animate(animate2);
+      circleRef.current.animate(circle2);
+      textRef.current.transitionTo({ scale: 0 });
+    }
+  }, [focused])
+
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={1}
+      style={styles.container}>
+      <Animatable.View
+        ref={viewRef}
+        duration={500}
+        style={styles.container}>
+        <View style={styles.btn}>
+          <Animatable.View
+            ref={circleRef}
+            style={styles.circle_valves} />
+            <Ionicons1 name={'sprinkler-variant'} color={focused ? '#12175E':'gray'} size={27}  />
+        </View>
+        <Animatable.Text
+          ref={textRef}
+          style={styles.text_weather}>
+            <Text>Válvulas</Text>
+        </Animatable.Text>
+      </Animatable.View>
+    </TouchableOpacity>
+  )
+}
+
 function MainContainer() {
   return (
     <NavigationContainer>
@@ -240,6 +293,14 @@ function MainContainer() {
               tabBarButton: (props) =>{
                 return(
                   <TabButton3 {...props}/>
+                )
+              } 
+            }}/>
+
+        <Tab.Screen name={valvesName} component={FadevalvesScreen} options={{
+              tabBarButton: (props) =>{
+                return(
+                  <TabButton4 {...props}/>
                 )
               } 
             }}/>
@@ -304,6 +365,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: "#7DC8E7",
+    borderRadius: 25,
+  },
+  circle_valves: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "#5B67CA",
     borderRadius: 25,
   },
   text_weather: {

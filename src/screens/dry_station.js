@@ -8,7 +8,7 @@ TouchableOpacity.defaultProps = { activeOpacity: 0.8 };
 
 
 const Home = () => {
-    const customData = require('./url.json'); 
+    const customData = require('../data/url.json'); 
     const [url, onChangeText] = React.useState(customData.url);
     const [number1, onChangeNumber1] = React.useState('');
     const [number2, onChangeNumber2] = React.useState('');
@@ -64,7 +64,7 @@ const Home = () => {
                 'Content-Type': 'text/html',
               },
               body: JSON.stringify({
-                'timestamp': Date(),
+                'ts': Date.now(),
               })
             });
           } catch (error) {

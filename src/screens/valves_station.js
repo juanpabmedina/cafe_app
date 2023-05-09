@@ -10,24 +10,18 @@ TouchableOpacity.defaultProps = { activeOpacity: 0.8 };
 const Home = () => {
     const customData = require('../data/url.json'); 
     const [url, onChangeText] = React.useState(customData.url);
-    const [number1, onChangeNumber1] = React.useState('');
-    const [number2, onChangeNumber2] = React.useState('');
     const [data, setData] = React.useState([1,2]);
     const [isLoading, setLoading] = React.useState(true);
     const flatList1 = React.useRef(null)
-    const flatList2 = React.useRef(null)
-    const flatList3 = React.useRef(null)
-    const flatList4 = React.useRef(null)
-    const flatList5 = React.useRef(null)
-
-
   
+
+    let number1 = React.useRef();
     
     const GetRequest = async () =>{
         try {
             const response = await fetch(url);
             const json = await response.json();
-            setData(json.estacion_fermentado);
+            setData(json.estacion_valvulas);
           } catch (error) {
             console.error(error);
           } finally {
@@ -35,8 +29,8 @@ const Home = () => {
           }
           
     };
-    
-    const PostRequest = async () =>{
+
+    const PostRequest = async (number1) =>{
         try {
             const response = await fetch(url, {
               method: 'post',
@@ -46,8 +40,7 @@ const Home = () => {
                 'Content-Type': 'text/html',
               },
               body: JSON.stringify({
-                ph:number1,
-                bx:number2
+                valves_state:number1,
               })
             });
           } catch (error) {
@@ -56,6 +49,19 @@ const Home = () => {
             setLoading(false);
           }
     };
+    
+
+    const ConnectionButton = ({ onPress, title, data }) => (
+        <TouchableOpacity onPress={PostRequestDataTime} style={styles.button1}>
+             <View style={{flexDirection:'row'}}>
+                <Image                    
+                        style={styles.imageStyle2}
+                        source={require("../images/connection_icon.png")}
+                    />
+                <Text style={styles.textButton}>{title}</Text>
+            </View>
+        </TouchableOpacity>
+    );
 
     const PostRequestDataTime = async () =>{
         try {
@@ -78,31 +84,6 @@ const Home = () => {
           }
     };
     
-
-    const ConnectionButton = ({ onPress, title, data }) => (
-        <TouchableOpacity onPress={PostRequestDataTime} style={styles.button1}>
-             <View style={{flexDirection:'row'}}>
-                <Image                    
-                        style={styles.imageStyle2}
-                        source={require("../images/connection_icon.png")}
-                    />
-                <Text style={styles.textButton}>{title}</Text>
-            </View>
-        </TouchableOpacity>
-    );
-
-    const SendButton = ({ onPress, title }) => (
-        <TouchableOpacity onPress={PostRequest} style={styles.button1}>
-        <View style={{flexDirection:'row'}}>
-           <Image                    
-                   style={styles.imageStyle2}
-                   source={require("../images/send_icon.png")}
-               />
-           <Text style={styles.textButton}>{title}</Text>
-       </View>
-   </TouchableOpacity>
-    );
-    
    
     useEffect(() => {
         const interval = setInterval(() => {
@@ -119,10 +100,10 @@ const Home = () => {
         <ScrollView>
         <View style={styles.container}> 
             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
-                <Text style={styles.title}> Estación de Fermentado </Text>
+                <Text style={styles.title}> Control de Válvulas</Text>
                 <Image                    
                     style={styles.dry_img}
-                    source={require("../images/estacion_fermentado/fermentation.png")}
+                    source={require("../images/estacion_valvulas/sprinkler.png")}
                 />
             </View>
             <View style={styles.sectionInputStyle}>
@@ -141,10 +122,33 @@ const Home = () => {
           
             
             <ConnectionButton data={url} title="Conectar" size="sm" backgroundColor="#1DB72D" />
-            <Text style={styles.title2}> Datos Recibidos </Text>
+            <Text style={styles.title2}> Control </Text>
 
             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
-                <ImageBackground style={styles.squareIrradiance} source={require("../images/estacion_fermentado/out_temp.png")}>
+
+                <TouchableOpacity onPress={() => {
+                    number1 = 1;
+                    PostRequest(number1)
+                }}>
+                    <ImageBackground style={styles.squareIrradiance} source={require("../images/estacion_valvulas/on_valves.png")}>
+                        <Text style={styles.out1}> Encender </Text>
+                    </ImageBackground>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => {
+                    number1 = 0;
+                    PostRequest(number1)
+                }}>
+                    <ImageBackground style={styles.squarePh} source={require("../images/estacion_valvulas/off_valves.png")}>
+                        <Text style={styles.out1}> Apagar </Text>
+                    </ImageBackground>
+                </TouchableOpacity>
+
+            </View>
+
+            <Text style={styles.title2}> Datos recibidos </Text>
+            <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
+                <ImageBackground style={styles.squareIrradiance} source={require("../images/estacion_valvulas/caudal.png")}>
                     <FlatList
                       ref={flatList1}
                       onContentSizeChange={() => {
@@ -155,27 +159,7 @@ const Home = () => {
                             const isEnd = index === data.length - 1;
                             return(
                                 <Text style={styles.out1}>
-                                    {isEnd && <Text>T1: {item.temp_alt1}°C </Text>}
-                                </Text>
-                            );
-                        }}
-                        scrollEnabled={false}
-                        
-                        />
-                </ImageBackground>
-
-                <ImageBackground style={styles.squarePh} source={require("../images/estacion_fermentado/out_temp.png")}>
-                    <FlatList
-                      ref={flatList2}
-                      onContentSizeChange={() => {
-                          flatList2.current.scrollToEnd();
-                      }}
-                        data={data}
-                        renderItem={({item, index}) => {
-                            const isEnd = index === data.length - 1;
-                            return(
-                                <Text style={styles.out1}>
-                                    {isEnd && <Text>T2: {item.temp_alt2}°C </Text>}
+                                    {isEnd && <Text>C: {item.caudal} L/m</Text>}
                                 </Text>
                             );
                         }}
@@ -184,66 +168,7 @@ const Home = () => {
                         />
                 </ImageBackground>
             </View>
-
-            <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
-                <ImageBackground style={styles.squareIrradiance} source={require("../images/estacion_fermentado/out_temp.png")}>
-                 
-                    <FlatList
-                      ref={flatList3}
-                      onContentSizeChange={() => {
-                          flatList3.current.scrollToEnd();
-                      }}
-                        data={data}
-                        renderItem={({item, index}) => {
-                            const isEnd = index === data.length - 1;
-                            return(
-                                <Text style={styles.out1}>
-                            
-                                    {isEnd && <Text>T3: {item.temp_alt3}°C </Text>}
-                                </Text>
-                            );
-                        }}
-                        scrollEnabled={false}
-                        
-                        />
-                </ImageBackground>
-            </View>
-
-
-            <Text style={styles.title2}> Envio de Datos </Text>
-
-            <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
-                <View style={styles.sectionInput2Style}>
-                    <Image                    
-                            source={require("../images/estacion_fermentado/ph_icon.png")}
-                            style={styles.imageStyle}
-                        />
-                    <TextInput
-                        style={{flex: 1}}
-                        onChangeText={onChangeNumber1}
-                        value={number1}
-                        placeholder="Valor ph"
-                        keyboardType="numeric"
-                    />
-                </View>
-
-                <View style={styles.sectionInput2Style}>
-                    <Image                    
-                            source={require("../images/estacion_fermentado/sugar-cube.png")}
-                            style={styles.imageStyle}
-                        />
-                    <TextInput
-                        style={{flex: 1}}
-                        onChangeText={onChangeNumber2}
-                        value={number2}
-                        placeholder="Grado Brix"
-                        keyboardType="numeric"
-                    />
-                </View>
-            </View>
-
-
-            <SendButton title="  Enviar" size="sm" backgroundColor="#1DB72D" />
+          
         </View>
         </ScrollView>
         </ImageBackground>
@@ -274,7 +199,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         height:50,
-        width: 140,
+        width: 180,
         margin: 15,
         borderWidth: 0.5,
         padding: 5,
@@ -304,30 +229,31 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
         fontWeight: 'bold',
         fontSize: 25,
-        color: '#1DB72D',
+        color: '#5B67CA',
         marginTop: 35,
-        marginLeft: 10,
+        marginLeft: 15,
+        marginRight: 10,
         alignSelf: 'flex-start'
     }, 
     title2: {
         fontStyle: 'italic',
         fontWeight: 'bold',
         fontSize: 24,
-        color: '#37783E',
+        color: '#12175E',
         marginTop: 35,
         marginLeft: 25,
         alignSelf: 'flex-start'
     }, 
     dry_img:{
-        width: 60,
-        height: 60,
+        width: 50,
+        height: 50,
         marginTop: 25,
-        marginRight:20
+        marginRight:30
     },
     button1: {
         width:180,
         height:47,
-        backgroundColor: "#1DB72D",
+        backgroundColor: "#5B67CA",
         borderRadius: 30,
         alignSelf:'center',
         paddingVertical: 5,

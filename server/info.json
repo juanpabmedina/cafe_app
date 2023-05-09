@@ -11,5 +11,8 @@
     {"temp_alt1": 20, "temp_alt2": 20, "temp_alt3": 20},
     {"temp_alt1": 20, "temp_alt2": 20, "temp_alt3": 20},
     {"temp_alt1": 20, "temp_alt2": 30, "temp_alt3": 30}
+  ],
+  "estacion_valvulas": [
+    {"caudal": 20}
   ]
 }
