@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import { View, Text, Image, ImageBackground, StyleSheet, TextInput, TouchableOpacity, FlatList, ScrollView} from "react-native";
+import { View, Text, Image, ImageBackground, StyleSheet, TextInput, TouchableOpacity, FlatList, ScrollView, Alert} from "react-native";
 
 
 TouchableOpacity.defaultProps = { activeOpacity: 0.8 };
@@ -26,12 +26,18 @@ const Home = () => {
             const response = await fetch(url);
             const json = await response.json();
             setData(json.estacion_secado);
-          } catch (error) {
-            console.error(error);
-          } finally {
+            if (isLoading == true) {
+                Alert.alert("Conexión al servidor exitosa");
+                return;
+            }
             setLoading(false);
+            
+          } catch (error) {
+            setLoading(true);
+            console.error(error);
+            Alert.alert("Error al conectar al servidor", error.message);
+            return;
           }
-          
     };
     
     const PostRequest = async () =>{
@@ -47,11 +53,13 @@ const Home = () => {
                 hg:number1,
               })
             });
+            Alert.alert("Envio de datos exitoso");
+            return;
           } catch (error) {
             console.error(error);
-          } finally {
-            setLoading(false);
-          }
+            Alert.alert("Error al enviar datos", error.message);
+            return;
+          } 
     };
 
     const PostRequestDataTime = async () =>{
@@ -67,10 +75,10 @@ const Home = () => {
                 'ts': Date.now(),
               })
             });
+            setLoading(false);
           } catch (error) {
             console.error(error);
           } finally {
-            setLoading(false);
             GetRequest()
           }
     };
@@ -99,6 +107,7 @@ const Home = () => {
        </View>
    </TouchableOpacity>
     );
+    
     
    
     useEffect(() => {
@@ -141,7 +150,7 @@ const Home = () => {
             <Text style={styles.title2}> Datos Recibidos </Text>
 
             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
-                <ImageBackground style={styles.squareIrradiance} source={require("../images/estacion_secado/temperature_out.png")}>
+                <ImageBackground style={styles.squareIrradiance} source={require("../images/estacion_secado/t_out.png")}>
                     <FlatList
                       ref={flatList1}
                       onContentSizeChange={() => {
@@ -161,7 +170,7 @@ const Home = () => {
                         />
                 </ImageBackground>
 
-                <ImageBackground style={styles.squarePh} source={require("../images/estacion_secado/temperature_out.png")}>
+                <ImageBackground style={styles.squarePh} source={require("../images/estacion_secado/t_out.png")}>
                     <FlatList
                       ref={flatList2}
                       onContentSizeChange={() => {
@@ -183,7 +192,7 @@ const Home = () => {
             </View>
 
             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
-                <ImageBackground style={styles.squareIrradiance} source={require("../images/estacion_secado/temperature_out.png")}>
+                <ImageBackground style={styles.squareIrradiance} source={require("../images/estacion_secado/t_out.png")}>
                  
                     <FlatList
                       ref={flatList3}

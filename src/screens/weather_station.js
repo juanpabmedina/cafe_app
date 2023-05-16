@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import { View, Text, Image, ImageBackground, StyleSheet, TextInput, TouchableOpacity, FlatList, ScrollView} from "react-native";
+import { View, Text, Image, ImageBackground, StyleSheet, TextInput, TouchableOpacity, FlatList, ScrollView, Alert} from "react-native";
 
 
 TouchableOpacity.defaultProps = { activeOpacity: 0.8 };
@@ -10,8 +10,6 @@ TouchableOpacity.defaultProps = { activeOpacity: 0.8 };
 const Home = () => {
     const customData = require('../data/url.json'); 
     const [url, onChangeText] = React.useState(customData.url);
-    const [number1, onChangeNumber1] = React.useState('');
-    const [number2, onChangeNumber2] = React.useState('');
     const [data, setData] = React.useState([1,2]);
     const [isLoading, setLoading] = React.useState(true);
     const flatList1 = React.useRef(null)
@@ -29,11 +27,17 @@ const Home = () => {
             const response = await fetch(url);
             const json = await response.json();
             setData(json.estacion_meteorologica);
-          } catch (error) {
-            console.error(error);
-          } finally {
+            if (isLoading == true) {
+                Alert.alert("Conexión al servidor exitosa");
+                return;
+            }
             setLoading(false);
-          }
+          } catch (error) {
+            setLoading(true);
+            console.error(error);
+            Alert.alert("Error al conectar al servidor", error.message);
+            return;
+          } 
           
     };
     
@@ -63,10 +67,10 @@ const Home = () => {
                 'ts': Date.now(),
               })
             });
+            setLoading(false);
           } catch (error) {
             console.error(error);
           } finally {
-            setLoading(false);
             GetRequest()
           }
     };

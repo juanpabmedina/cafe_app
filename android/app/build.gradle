@@ -117,6 +117,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('cafiot_app_key.keystore')
+            storePassword '112358'
+            keyAlias 'cafiot_app'
+            keyPassword '112358'
+            }
     }
     buildTypes {
         debug {
@@ -128,6 +134,8 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
+
         }
     }
 

@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import { View, Text, Image, ImageBackground, StyleSheet, TextInput, TouchableOpacity, FlatList, ScrollView} from "react-native";
+import { View, Text, Image, ImageBackground, StyleSheet, TextInput, TouchableOpacity, FlatList, ScrollView, Alert} from "react-native";
 
 
 TouchableOpacity.defaultProps = { activeOpacity: 0.8 };
@@ -22,12 +22,17 @@ const Home = () => {
             const response = await fetch(url);
             const json = await response.json();
             setData(json.estacion_valvulas);
-          } catch (error) {
-            console.error(error);
-          } finally {
-            setLoading(false);
+            if (isLoading == true) {
+              Alert.alert("Conexión al servidor exitosa");
+              return;
           }
-          
+          setLoading(false);
+          } catch (error) {
+            setLoading(true);
+            console.error(error);
+            Alert.alert("Error al conectar al servidor", error.message);
+            return;
+          }           
     };
 
     const PostRequest = async (number1) =>{
@@ -43,11 +48,13 @@ const Home = () => {
                 valves_state:number1,
               })
             });
+            Alert.alert("Envio de datos exitoso");
+            return;
           } catch (error) {
             console.error(error);
-          } finally {
-            setLoading(false);
-          }
+            Alert.alert("Error al enviar datos", error.message);
+            return;
+          } 
     };
     
 
@@ -76,10 +83,10 @@ const Home = () => {
                 'ts': Date.now(),
               })
             });
+            setLoading(false);
           } catch (error) {
             console.error(error);
           } finally {
-            setLoading(false);
             GetRequest()
           }
     };
