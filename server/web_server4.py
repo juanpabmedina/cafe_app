@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import cgi
 
-hostName = "172.16.24.196"
+hostName = "172.16.5.18"
 
 PORT = 8000
 
