@@ -75,7 +75,7 @@ const Home = () => {
                 'Content-Type': 'text/html',
               },
               body: JSON.stringify({
-                'ts': Date.now(),
+                'ts': Math.floor(Date.now() / 1000),
               })
             });
             setLoading(false);
@@ -208,6 +208,49 @@ const Home = () => {
                                 <Text style={styles.out1}>
                             
                                     {isEnd && <Text>T3: {item.temp_alt3}°C </Text>}
+                                </Text>
+                            );
+                        }}
+                        scrollEnabled={false}
+                        
+                        />
+                </ImageBackground>
+                <ImageBackground style={styles.squarePh} source={require("../images/estacion_fermentado/out_temp_amb.png")}>
+                    <FlatList
+                      ref={flatList4}
+                      onContentSizeChange={() => {
+                          flatList4.current.scrollToEnd();
+                      }}
+                        data={data}
+                        renderItem={({item, index}) => {
+                            const isEnd = index === data.length - 1;
+                            return(
+                                <Text style={styles.out1}>
+                                    {isEnd && <Text>T.A.: {item.temp_amb}°C </Text>}
+                                </Text>
+                            );
+                        }}
+                        scrollEnabled={false}
+                        
+                        />
+                </ImageBackground>
+            </View>
+
+            <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
+                <ImageBackground style={styles.squareIrradiance} source={require("../images/estacion_fermentado/out_hum.png")}>
+                 
+                    <FlatList
+                      ref={flatList5}
+                      onContentSizeChange={() => {
+                          flatList5.current.scrollToEnd();
+                      }}
+                        data={data}
+                        renderItem={({item, index}) => {
+                            const isEnd = index === data.length - 1;
+                            return(
+                                <Text style={styles.out1}>
+                            
+                                    {isEnd && <Text>H.A: {item.hum_amb}% </Text>}
                                 </Text>
                             );
                         }}
